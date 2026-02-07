@@ -12,3 +12,4 @@ C:\Users\Tushar Gupta\Desktop\Student-task-management-project\StudentTaskManager
 C:\Users\Tushar Gupta\Desktop\Student-task-management-project\StudentTaskManager\obj\Debug\net10.0\StudentTaskManager.pdb
 C:\Users\Tushar Gupta\Desktop\Student-task-management-project\StudentTaskManager\obj\Debug\net10.0\StudentTaskManager.genruntimeconfig.cache
 C:\Users\Tushar Gupta\Desktop\Student-task-management-project\StudentTaskManager\obj\Debug\net10.0\ref\StudentTaskManager.dll
+C:\Users\Tushar Gupta\Desktop\Student-task-management-project\StudentTaskManager\obj\Debug\net10.0\StudentTaskManager.sourcelink.json
