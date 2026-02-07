@@ -29,9 +29,8 @@ class Program
             Console.WriteLine("\n==== Student Task Manager ====");
             Console.WriteLine("1. Add Task");
             Console.WriteLine("2. View Tasks by Priority");
-            Console.WriteLine("3. Mark Task as Completed");
-            Console.WriteLine("4. Delete Completed Tasks");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("3. Complete Task (Auto Delete)");
+            Console.WriteLine("4. Exit");
             Console.Write("Choose option: ");
 
             string choice = Console.ReadLine();
@@ -48,9 +47,6 @@ class Program
                     CompleteTask();
                     break;
                 case "4":
-                    DeleteCompletedTasks();
-                    break;
-                case "5":
                     return;
                 default:
                     Console.WriteLine("Invalid choice!");
@@ -105,7 +101,7 @@ class Program
 
     static void CompleteTask()
     {
-        Console.Write("Enter task ID to mark as completed: ");
+        Console.Write("Enter task ID to complete: ");
         int id = int.Parse(Console.ReadLine());
 
         var task = allTasks.Find(t => t.Id == id);
@@ -116,22 +112,18 @@ class Program
             return;
         }
 
-        task.IsCompleted = true;
-        Console.WriteLine("Task marked as completed.");
-    }
+        // Remove from list
+        allTasks.Remove(task);
 
-
-    static void DeleteCompletedTasks()
-    {
-        allTasks.RemoveAll(t => t.IsCompleted);
-
+        // Rebuild priority queue
         taskQueue.Clear();
-        foreach (var task in allTasks)
+        foreach (var t in allTasks)
         {
-            taskQueue.Enqueue(task, task.Deadline);
+            taskQueue.Enqueue(t, t.Deadline);
         }
 
-        Console.WriteLine("Completed tasks deleted.");
+        Console.WriteLine("Task completed and removed.");
     }
+
 
 }
