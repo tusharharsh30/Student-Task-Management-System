@@ -5,19 +5,20 @@ class TaskItem
 {
     public int Id { get; set; }
     public string Title { get; set; }
-    public int Priority { get; set; } // Lower number = higher priority
+    public DateTime Deadline { get; set; }
     public bool IsCompleted { get; set; }
 
     public override string ToString()
     {
         string status = IsCompleted ? "Completed" : "Pending";
-        return $"[{Id}] {Title} | Priority: {Priority} | Status: {status}";
+        return $"[{Id}] {Title} | Deadline: {Deadline:dd-MM-yyyy} | Status: {status}";
     }
 }
 
+
 class Program
 {
-    static PriorityQueue<TaskItem, int> taskQueue = new();
+    static PriorityQueue<TaskItem, DateTime> taskQueue = new();
     static List<TaskItem> allTasks = new();
     static int taskIdCounter = 1;
 
@@ -60,25 +61,27 @@ class Program
 
     static void AddTask()
     {
+
         Console.Write("Enter task title: ");
         string title = Console.ReadLine();
 
-        Console.Write("Enter priority (1 = High, 5 = Low): ");
-        int priority = int.Parse(Console.ReadLine());
+        Console.Write("Enter deadline (yyyy-mm-dd): ");
+        DateTime deadline = DateTime.Parse(Console.ReadLine());
 
         TaskItem task = new TaskItem
         {
             Id = taskIdCounter++,
             Title = title,
-            Priority = priority,
+            Deadline = deadline,
             IsCompleted = false
         };
 
         allTasks.Add(task);
-        taskQueue.Enqueue(task, priority);
+        taskQueue.Enqueue(task, deadline);
 
-        Console.WriteLine("Task added successfully!");
+        Console.WriteLine("Task added with deadline.");
     }
+
 
     static void ViewTasks()
     {
@@ -88,10 +91,9 @@ class Program
             return;
         }
 
-        Console.WriteLine("\n--- Tasks (High Priority First) ---");
+        Console.WriteLine("\n--- Tasks Ordered by Deadline ---");
 
-        // Temporary queue to preserve original queue
-        var tempQueue = new PriorityQueue<TaskItem, int>(taskQueue.UnorderedItems);
+        var tempQueue = new PriorityQueue<TaskItem, DateTime>(taskQueue.UnorderedItems);
 
         while (tempQueue.Count > 0)
         {
@@ -99,6 +101,7 @@ class Program
             Console.WriteLine(task);
         }
     }
+
 
     static void CompleteTask()
     {
@@ -109,13 +112,14 @@ class Program
 
         if (task == null)
         {
-            Console.WriteLine("Task not found!");
+            Console.WriteLine("Task not found.");
             return;
         }
 
         task.IsCompleted = true;
         Console.WriteLine("Task marked as completed.");
     }
+
 
     static void DeleteCompletedTasks()
     {
@@ -124,9 +128,10 @@ class Program
         taskQueue.Clear();
         foreach (var task in allTasks)
         {
-            taskQueue.Enqueue(task, task.Priority);
+            taskQueue.Enqueue(task, task.Deadline);
         }
 
         Console.WriteLine("Completed tasks deleted.");
     }
+
 }
